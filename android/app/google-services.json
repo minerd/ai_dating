@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "337756546448",
+    "firebase_url": "https://be-real-dating-default-rtdb.firebaseio.com",
+    "project_id": "be-real-dating",
+    "storage_bucket": "be-real-dating.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337756546448:android:f5a1f8493a04c230d57f15",
+        "android_client_info": {
+          "package_name": "com.example.ai_dating"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3Z9rHX3US0BAcwBgFzEhTlhE58-ZebVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
