@@ -42,17 +42,16 @@ class StoreData {
       Uint8List? compressedFile = await compressImage(file);
       if (compressedFile != null) {
         String imageUrl = await uploadImageToStorage(FirebaseAuth.instance.currentUser!.email!, compressedFile);
-        await _firestore.collection(FirebaseAuth.instance.currentUser!.email!).add({
-          'imageLink': imageUrl,
+        // Save image URL to Firestore
+        await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.email).update({
+          'images': FieldValue.arrayUnion([imageUrl])
         });
-        resp = 'success';
+        return 'success';
       } else {
-        resp = "Image compression failed";
+        return "Image compression failed";
       }
-    } catch (err) {
-      resp = err.toString();
+    } catch (e) {
+      return e.toString();
     }
-    print(resp);
-    return resp;
   }
 }

@@ -16,6 +16,14 @@
 	<string>ai_dating</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need access to your location for XYZ feature while you are using the app.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need access to your location at all times for XYZ feature.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We need access to your location at all times for XYZ feature.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Need access to the photo library for uploading profile pictures.</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>

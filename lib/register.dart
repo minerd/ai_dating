@@ -15,6 +15,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'tos.dart';
+import 'register_screen_1.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -229,29 +230,37 @@ class _RegisterPageState extends State<RegisterPage> {
         FirebaseFirestore.instance.collection('Users')
             .doc(userCredential.user!.email)
             .set({
-          'Friends': [],
-          'username': emailTextController.text.split('@')[0],
-          'username_lowercase': emailTextController.text.split('@')[0].toLowerCase(),
-          'bio': 'Empty bio...',
-          'classesRegistered': true,
-          'Registered Classes': registeredClasses,
-          'theme': 'default',
-          'blockedUsers': [],
+          'images': [],
+          'age': '',
+          'height': '',
+          'location':'',
+          'zodiac':'',
+          'age_bounds': [],
+          'distance bounds': '',
+          'looking_for': '',
+          'open_to': '',
+          'family_plans': '',
+          'personality_type': '',
+          'communication_style': '',
+          'love_style': '',
+          'pets': '',
+          'drinking': '',
+          'smoking': '',
+          'video_games': '',
+          'cannabis': '',
+          'workout': '',
+          'Dietary Preference': '',
+          'social_media': '',
+          'sleeping_habits': '',
+          'name': '',
           'terms_agreed': true, // Add terms_agreed field set to true
-          'soldItems': [],
-          'boughtItems': [],
-          'userItems':[],
-          'sellerRating': 0.0,
-          'buyerRating': 0.0,
-          'sellerRatingAmount': 0,
-          'buyerRatingAmount': 0,
 
         });
         saveProfile();
 
         if (context.mounted) {
           Navigator.pop(context); // Dismiss loading indicator
-          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen1(),),);
         }
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context); // Dismiss loading indicator
@@ -329,11 +338,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       )
                     ],
                   )
-
-
-
-
-
                 ],
 
               ),
