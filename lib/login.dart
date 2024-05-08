@@ -7,6 +7,7 @@ import 'package:ai_dating/text_field.dart';
 import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ai_dating/constants.dart';
+import 'chat_page.dart';
 
 bool isClassRegistered = true;
 final _firestore = FirebaseFirestore.instance;
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordTextController.text,
       );
       Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage(),),);
+        context, MaterialPageRoute(builder: (context) => ChatPage(),),);
 
     } on FirebaseAuthException catch(e){
       Navigator.pop(context);

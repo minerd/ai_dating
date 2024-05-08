@@ -16,6 +16,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'tos.dart';
 import 'register_screen_1.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 
 class RegisterPage extends StatefulWidget {
 
@@ -43,29 +46,6 @@ class _RegisterPageState extends State<RegisterPage> {
     return downloadUrl;
   }
 
-  Future<void> updateBuyerRating(String buyerId, double newRating) async {
-    final userRef = FirebaseFirestore.instance.collection('Users').doc(buyerId);
-
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(userRef);
-
-      if (!snapshot.exists) throw Exception("User does not exist!");
-
-      double currentRating = snapshot.get('buyerRating') ?? 0.0;
-      int ratingCount = snapshot.get('buyerRatingAmount') ?? 0;
-
-      // Calculate the new average rating
-      double newAverageRating = ((currentRating * ratingCount) + newRating) / (ratingCount + 1);
-
-      // Update the document with the new rating and increment the count
-      transaction.update(userRef, {
-        'buyerRating': newAverageRating,
-        'buyerRatingAmount': FieldValue.increment(1)
-      });
-    }).catchError((error) {
-      print("Failed to update buyer's rating: $error");
-    });
-  }
 
 
   Future<Uint8List?> compressImage(Uint8List fileBytes) async {
@@ -91,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
       // Compress the image first
       Uint8List? compressedFile = await compressImage(file);
       if (compressedFile != null) {
-        String imageUrl = await uploadImageToStorage(emailTextController.text.toLowerCase(), compressedFile);
+        String imageUrl = await uploadImageToStorage(FirebaseAuth.instance.currentUser!.uid, compressedFile);
         await _firestore.collection(emailTextController.text.toLowerCase()).add({
           'imageLink': imageUrl,
         });
@@ -227,9 +207,10 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
         // Add user data including terms_agreed
-        FirebaseFirestore.instance.collection('Users')
-            .doc(userCredential.user!.email)
+        FirebaseFirestore.instance.collection('users')
+            .doc(userCredential.user!.uid)
             .set({
+          'id': FirebaseAuth.instance.currentUser!.uid,
           'images': [],
           'age': '',
           'height': '',
@@ -257,6 +238,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
         });
         saveProfile();
+
+        await FirebaseChatCore.instance.createUserInFirestore(
+          types.User(
+            firstName: 'John',
+            id: FirebaseAuth.instance.currentUser!.uid, // UID from Firebase Authentication
+            imageUrl: 'https://i.pravatar.cc/300',
+            lastName: 'Doe',
+          ),
+        );
 
         if (context.mounted) {
           Navigator.pop(context); // Dismiss loading indicator

@@ -62,7 +62,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
     });
     try {
       final Position position = await _determinePosition();
-      await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.email).update({
+      await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
         'name': _nameController.text,
         'age': int.parse(_ageController.text),
         'location': GeoPoint(position.latitude, position.longitude),
