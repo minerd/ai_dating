@@ -1,6 +1,7 @@
 import 'package:ai_dating/home_page.dart';
 import 'package:ai_dating/register.dart';
 import 'package:ai_dating/button.dart';
+import 'package:ai_dating/swipe_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dating/text_field.dart';
@@ -39,6 +40,10 @@ class _LoginPageState extends State<LoginPage> {
   
   void PhonePage(){
      Navigator.push(context, MaterialPageRoute(builder: (context)=>phonePage()));
+  }
+
+  void TestSwipeable(){
+     Navigator.push(context, MaterialPageRoute(builder: (context)=>Swipes()));
   }
 
   //user sign in
@@ -95,7 +100,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Text("Welcome!", style: TextStyle(fontFamily: 'sfPro', fontSize: 17),),
                 const SizedBox(height: 25,),
-
                 MyTextField(controller: emailTextController, hintText: 'Email', obscureText: false),
                 const SizedBox(height: 10,),
                 MyTextField(controller: passwordTextController, hintText: 'Password', obscureText: true),
@@ -138,6 +142,18 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontFamily: 'sfProBold',
                           color: Colors.green,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 4,),
+                    Text(' | '),
+                    GestureDetector(
+                      onTap: TestSwipeable,
+                      child: const Text(
+                        "Test Swipeable",
+                        style: TextStyle(
+                          fontFamily: 'sfProBold',
+                          color: Colors.red, // Choose your desired color for the button text
                         ),
                       ),
                     ),
