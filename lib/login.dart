@@ -1,9 +1,11 @@
 import 'package:ai_dating/home_page.dart';
 import 'package:ai_dating/register.dart';
 import 'package:ai_dating/button.dart';
+import 'package:ai_dating/swipe_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dating/text_field.dart';
+import 'package:ai_dating/phone_page.dart';
 import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ai_dating/constants.dart';
@@ -36,6 +38,15 @@ class _LoginPageState extends State<LoginPage> {
   void noSignIn() {
     Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
   }
+  
+  void PhonePage(){
+     Navigator.push(context, MaterialPageRoute(builder: (context)=>phonePage()));
+  }
+
+  void TestSwipeable(){
+     Navigator.push(context, MaterialPageRoute(builder: (context)=>Swipes()));
+  }
+
   //user sign in
   void signIn() async {
     //show progress
@@ -90,23 +101,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Text("Welcome!", style: TextStyle(fontFamily: 'sfPro', fontSize: 17),),
                 const SizedBox(height: 25,),
-
                 MyTextField(controller: emailTextController, hintText: 'Email', obscureText: false),
-
                 const SizedBox(height: 10,),
-
                 MyTextField(controller: passwordTextController, hintText: 'Password', obscureText: true),
-
                 const SizedBox(height: 25,),
-                //sign in butt
-                MyButton(onTap: signIn, text: 'Sign in',),
-
+                MyButton(onTap: signIn, text: 'Sign in'),
                 const SizedBox(height: 25,),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Not a member?", style: TextStyle(fontFamily: 'sfPro', fontSize: 14),),
+                    Text("Not a member?", style: TextStyle(fontFamily: 'sfPro', fontSize: 14)),
                     const SizedBox(width: 4,),
                     GestureDetector(
                       onTap: register,
@@ -129,7 +133,31 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.orange,
                         ),
                       ),
-                    )
+                    ),
+                    const SizedBox(width: 4,),
+                    Text(' | '),
+                    GestureDetector(
+                      onTap: PhonePage,
+                      child: const Text(
+                        "Sign In with Phone",
+                        style: TextStyle(
+                          fontFamily: 'sfProBold',
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 4,),
+                    Text(' | '),
+                    GestureDetector(
+                      onTap: TestSwipeable,
+                      child: const Text(
+                        "Test Swipeable",
+                        style: TextStyle(
+                          fontFamily: 'sfProBold',
+                          color: Colors.red, // Choose your desired color for the button text
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],
