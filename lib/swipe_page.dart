@@ -1,4 +1,4 @@
-import 'dart:math';
+/*import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ai_dating/tinder_card.dart';
@@ -47,4 +47,4 @@ class _SwipesState extends State<Swipes> {
       ),
     );
   }
-}
+}*/

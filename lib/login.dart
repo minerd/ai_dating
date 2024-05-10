@@ -43,9 +43,9 @@ class _LoginPageState extends State<LoginPage> {
      Navigator.push(context, MaterialPageRoute(builder: (context)=>phonePage()));
   }
 
-  void TestSwipeable(){
+  /*void TestSwipeable(){
      Navigator.push(context, MaterialPageRoute(builder: (context)=>Swipes()));
-  }
+  }*/
 
   //user sign in
   void signIn() async {
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordTextController.text,
       );
       Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ChatPage(),),);
+        context, MaterialPageRoute(builder: (context) => HomePage(),),);
 
     } on FirebaseAuthException catch(e){
       Navigator.pop(context);
@@ -107,35 +107,50 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25,),
                 MyButton(onTap: signIn, text: 'Sign in'),
                 const SizedBox(height: 25,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
-                    Text("Not a member?", style: TextStyle(fontFamily: 'sfPro', fontSize: 14)),
-                    const SizedBox(width: 4,),
-                    GestureDetector(
-                      onTap: register,
-                      child: const Text(
-                        'Register Now!',
-                        style: TextStyle(
-                          fontFamily: 'sfProBold',
-                          color: Colors.blue,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Not a member?", style: TextStyle(fontFamily: 'sfPro', fontSize: 14)),
+                        const SizedBox(width: 4,),
+                        GestureDetector(
+                          onTap: register,
+                          child: const Text(
+                            'Register Now!',
+                            style: TextStyle(
+                              fontFamily: 'sfProBold',
+                              color: Colors.blue,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 4,),
+                        Text(' | '),
+                        GestureDetector(
+                          onTap: noSignIn,
+                          child: const Text(
+                            "Continue anyways!",
+                            style: TextStyle(
+                              fontFamily: 'sfProBold',
+                              color: Colors.orange,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4,),
+                        Text(' | '),
+                        GestureDetector(
+                          onTap: (){},//TestSwipeable,
+                          child: const Text(
+                            "Test Swipeable",
+                            style: TextStyle(
+                              fontFamily: 'sfProBold',
+                              color: Colors.red, // Choose your desired color for the button text
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(width: 4,),
-                    Text(' | '),
-                    GestureDetector(
-                      onTap: noSignIn,
-                      child: const Text(
-                        "Continue anyways!",
-                        style: TextStyle(
-                          fontFamily: 'sfProBold',
-                          color: Colors.orange,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 4,),
-                    Text(' | '),
                     GestureDetector(
                       onTap: PhonePage,
                       child: const Text(
@@ -146,20 +161,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 4,),
-                    Text(' | '),
-                    GestureDetector(
-                      onTap: TestSwipeable,
-                      child: const Text(
-                        "Test Swipeable",
-                        style: TextStyle(
-                          fontFamily: 'sfProBold',
-                          color: Colors.red, // Choose your desired color for the button text
-                        ),
-                      ),
-                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),

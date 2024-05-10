@@ -1,6 +1,9 @@
 import 'package:ai_dating/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'settings.dart';
+import 'chat_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,26 +26,70 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _settingsPage() async {
+      // Optionally push the user to the login screen or just exit the app
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>ThemePage()));  // This will return to the previous screen. Adjust according to your app's flow.
+  }
+
+  Future<void> _chatPage() async {
+    // Optionally push the user to the login screen or just exit the app
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage()));  // This will return to the previous screen. Adjust according to your app's flow.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('BeReal Dating'),
       ),
-      body: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(20),
-        child: InkWell(
-          onTap: _signOut,  // Call the sign out method when the text is tapped
-          child: Text(
-            'Sign Out',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
+      body: Row(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(20),
+            child: InkWell(
+              onTap: _signOut,  // Call the sign out method when the text is tapped
+              child: Text(
+                'Sign Out',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
           ),
-        ),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(20),
+            child: InkWell(
+              onTap: _settingsPage,  // Call the sign out method when the text is tapped
+              child: Text(
+                'Settings Page',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(20),
+            child: InkWell(
+              onTap: _chatPage,  // Call the sign out method when the text is tapped
+              child: Text(
+                'Chat Page',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

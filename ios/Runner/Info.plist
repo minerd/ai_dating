@@ -14,6 +14,17 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>ai_dating</string>
+	<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>app-1-337756546448-ios-02c657b3c79e32dbd57f15</string>
+            </array>
+            <key>CFBundleURLName</key>
+            <string>com.example.aiDating</string>
+        </dict>
+    </array>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
