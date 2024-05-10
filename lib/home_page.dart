@@ -1,9 +1,8 @@
-import 'package:ai_dating/login.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'settings.dart';
-import 'chat_page.dart';
+import 'settings.dart';  // Make sure this is correctly imported
+import 'chat_page.dart';  // Make sure this is correctly imported
+import 'login.dart';  // Make sure this is correctly imported
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,84 +12,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Sign out method
-  Future<void> _signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      // Optionally push the user to the login screen or just exit the app
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));  // This will return to the previous screen. Adjust according to your app's flow.
-    } catch (e) {
-      // If there is an error signing out, you might want to handle it in some way,
-      // e.g., showing an error message.
-      print('Error signing out: $e');
-    }
-  }
+  int _selectedIndex = 0;  // Current index for the bottom navigation bar
 
-  Future<void> _settingsPage() async {
-      // Optionally push the user to the login screen or just exit the app
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>ThemePage()));  // This will return to the previous screen. Adjust according to your app's flow.
-  }
+  // List of widgets to call from the bottom navigation bar
+  final List<Widget> _widgetOptions = [
+    Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, fontFamily: 'Ranga')), // Home Widget Placeholder
+    ChatPage(),
+    ThemePage(),
+  ];
 
-  Future<void> _chatPage() async {
-    // Optionally push the user to the login screen or just exit the app
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage()));  // This will return to the previous screen. Adjust according to your app's flow.
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BeReal Dating'),
+        title: Text('BeReal Dating', style: TextStyle(fontFamily: 'Ranga', fontSize: 23)),
       ),
-      body: Row(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(20),
-            child: InkWell(
-              onTap: _signOut,  // Call the sign out method when the text is tapped
-              child: Text(
-                'Sign Out',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),  // Display the selected page
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(20),
-            child: InkWell(
-              onTap: _settingsPage,  // Call the sign out method when the text is tapped
-              child: Text(
-                'Settings Page',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
           ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(20),
-            child: InkWell(
-              onTap: _chatPage,  // Call the sign out method when the text is tapped
-              child: Text(
-                'Chat Page',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
+  }
+
+  Future<void> _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } catch (e) {
+      print('Error signing out: $e');
+    }
   }
 }
