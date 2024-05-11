@@ -19,6 +19,16 @@ class _ThemePageState extends State<ThemePage> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _videoGamesController = TextEditingController();
+  final TextEditingController _zodiacController = TextEditingController();
+  final TextEditingController _lookingForController = TextEditingController();
+  final TextEditingController _loveStyleController = TextEditingController();
+  final TextEditingController _personalityTypeController = TextEditingController();
+  final TextEditingController _petController = TextEditingController();
+  final TextEditingController _drinkingController = TextEditingController();
+  final TextEditingController _smokingController = TextEditingController();
+  final TextEditingController _cannabisController = TextEditingController();
+  final TextEditingController _workoutController = TextEditingController();
+  final TextEditingController _sleepingController = TextEditingController();
 
   @override
   void initState() {
@@ -45,6 +55,16 @@ class _ThemePageState extends State<ThemePage> {
         _heightController.text = userData['height'] ?? '';
         _nameController.text = userData['name'] ?? '';
         _videoGamesController.text = userData['video_games'] ?? '';
+        _zodiacController.text = userData['zodiac'] ?? '';
+        _lookingForController.text = userData['looking_for'] ?? '';
+        _loveStyleController.text = userData['love_style'] ?? '';
+        _personalityTypeController.text = userData['personality_type'] ?? '';
+        _petController.text = userData['pet'] ?? '';
+        _drinkingController.text = userData['drinking'] ?? '';
+        _smokingController.text = userData['smoking'] ?? '';
+        _cannabisController.text = userData['cannabis'] ?? '';
+        _workoutController.text = userData['workout'] ?? '';
+        _sleepingController.text = userData['sleep'] ?? '';
       }
     }
   }
@@ -52,10 +72,6 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings', style: TextStyle(fontFamily: 'sfPro')),
-        centerTitle: true,
-      ),
       body: ListView(
         children: [
           ExpansionTile(
@@ -77,42 +93,48 @@ class _ThemePageState extends State<ThemePage> {
           _editProfileField('Height', _heightController),
           _editProfileField('Name', _nameController),
           _editProfileField('Video Games', _videoGamesController),
-          _buildExpansionTile('Age', ['18', '19', '20', '21', '22','23','24','25','26','27']),
-          _buildExpansionTile('Zodiac', ['Taurus','Gemini','Cancer','Leo','Virgo','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces','Aries','Libra']),
-          _buildExpansionTile('Looking_For', ['Monogamy','Not Sure', 'Short Term Fun']),
-          _buildExpansionTile('Love Style', ['Touch','Gifts','Thoughtful Gestures','Quality Time','Words of Affirmation']),
+          _buildExpansionTile('Age', ['18', '19', '20', '21', '22','23','24','25','26','27'], _ageController),
+          _buildExpansionTile('Zodiac', ['Taurus','Gemini','Cancer','Leo','Virgo','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces','Aries','Libra'],_zodiacController),
+          _buildExpansionTile('Looking For', ['Monogamy','Not Sure', 'Short Term Fun'],_lookingForController),
+          _buildExpansionTile('Love Style', ['Touch','Gifts','Thoughtful Gestures','Quality Time','Words of Affirmation'],_loveStyleController),
           _buildExpansionTile('Personality Type', [
             'ISTJ', 'ISFJ', 'INFJ', 'INTJ', // Introverted, Intuitive
             'ISTP', 'ISFP', 'INFP', 'INTP', // Introverted, Perceiving
             'ESTP', 'ESFP', 'ENFP', 'ENTP', // Extroverted, Perceiving
             'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'  // Extroverted, Judging
-          ]),
-          _buildExpansionTile('pets', ['Dog','Cat','Lizard','Mouse','Fish','Dog','Reptile']),
-          _buildExpansionTile('Drinking', ['Sober Curious','Often','On Weekends','Never']),
-          _buildExpansionTile('Smoking', ['Often','Sometimes','Never']),
-          _buildExpansionTile('Cannabis',['Often','Sometimes','Never']),
-          _buildExpansionTile('Workout',['Often','Sometimes','Never']),
-          _buildExpansionTile('Sleeping Habits', ['Early Bird','Normal','Night Owl']),
+          ],_personalityTypeController),
+          _buildExpansionTile('Pets', ['Dog','Cat','Lizard','Mouse','Fish','Dog','Reptile'],_petController),
+          _buildExpansionTile('Drinking', ['Sober Curious','Often','On Weekends','Never'],_drinkingController),
+          _buildExpansionTile('Smoking', ['Often','Sometimes','Never'],_smokingController),
+          _buildExpansionTile('Cannabis',['Often','Sometimes','Never'],_cannabisController),
+          _buildExpansionTile('Workout',['Often','Sometimes','Never'],_workoutController),
+          _buildExpansionTile('Sleeping Habits', ['Early Bird','Normal','Night Owl'],_sleepingController),
           ListTile(
-            title: Text('Update Profile', style: TextStyle(color: Colors.blue)),
+            title: const Center(child: Text('Update Profile', style: TextStyle(color: Colors.blue))),
             onTap: _updateUserProfile,
           ),
           ListTile(
-            title: Text('Delete Account', style: TextStyle(color: Colors.red, fontFamily: 'sfPro')),
+            title: const Center(child: Text('Delete Account', style: TextStyle(color: Colors.red))),
             onTap: _confirmDeleteAccount,
+          ),
+          ListTile(
+            title: const Center(child: Text('Sign Out', style: TextStyle(color: Colors.teal))),
+            onTap: _signOut,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildExpansionTile(String title, List<String> options) {
+  Widget _buildExpansionTile(String title, List<String> options,TextEditingController controller) {
     return ExpansionTile(
       title: Text(title),
       children: options.map((String option) {
         return ListTile(
           title: Text(option),
-          onTap: () {},
+          onTap: (){setState(() {
+            controller.text = option; // Set the selected option to the controller
+          });},
         );
       }).toList(),
     );
@@ -203,6 +225,16 @@ class _ThemePageState extends State<ThemePage> {
       },
     );
   }
+
+  Future<void> _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+    } catch (e) {
+      _showErrorDialog('Failed to sign out: $e');
+    }
+  }
+
 
   Future<void> _deleteUserAccount() async {
     final user = FirebaseAuth.instance.currentUser;

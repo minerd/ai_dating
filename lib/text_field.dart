@@ -17,7 +17,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       maxLength: 200,
-      style: TextStyle(color: Colors.black, fontFamily: 'sfPro', fontSize: 15,),
+      style: TextStyle(color: Colors.black, fontSize: 15,),
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
@@ -30,7 +30,7 @@ class MyTextField extends StatelessWidget {
         fillColor: theme,
         filled: true,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.black, fontFamily: 'sfPro', fontSize: 15,),
+        hintStyle: TextStyle(color: Colors.black, fontSize: 17,),
       ),
     );
   }

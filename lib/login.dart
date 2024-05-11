@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: 200,
                   height: 200,
                 ),
-                Text("Welcome!", style: TextStyle(fontFamily: 'sfPro', fontSize: 17),),
+                const Text("Welcome!", style: TextStyle(fontSize: 17),),
                 const SizedBox(height: 25,),
                 MyTextField(controller: emailTextController, hintText: 'Email', obscureText: false),
                 const SizedBox(height: 10,),
@@ -112,14 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Not a member?", style: TextStyle(fontFamily: 'sfPro', fontSize: 14)),
+                        const Text("Not a member?", style: TextStyle( fontSize: 14)),
                         const SizedBox(width: 4,),
                         GestureDetector(
                           onTap: register,
                           child: const Text(
                             'Register Now!',
                             style: TextStyle(
-                              fontFamily: 'sfProBold',
                               color: Colors.blue,
                             ),
                           ),
@@ -131,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text(
                             "Continue anyways!",
                             style: TextStyle(
-                              fontFamily: 'sfProBold',
                               color: Colors.orange,
                             ),
                           ),
@@ -143,7 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text(
                             "Test Swipeable",
                             style: TextStyle(
-                              fontFamily: 'sfProBold',
                               color: Colors.red, // Choose your desired color for the button text
                             ),
                           ),
@@ -156,7 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         "Sign In with Phone",
                         style: TextStyle(
-                          fontFamily: 'sfProBold',
                           color: Colors.green,
                         ),
                       ),

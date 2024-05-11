@@ -207,10 +207,20 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
         // Add user data including terms_agreed
+        saveProfile();
+
+        await FirebaseChatCore.instance.createUserInFirestore(
+          types.User(
+            firstName: 'John',
+            id: FirebaseAuth.instance.currentUser!.uid, // UID from Firebase Authentication
+            imageUrl: '',
+            lastName: 'Doe',
+          ),
+        );
+        saveProfile();
         FirebaseFirestore.instance.collection('users')
             .doc(userCredential.user!.uid)
             .set({
-          'id': FirebaseAuth.instance.currentUser!.uid,
           'images': [],
           'age': '',
           'height': '',
@@ -234,19 +244,11 @@ class _RegisterPageState extends State<RegisterPage> {
           'social_media': '',
           'sleeping_habits': '',
           'name': '',
+          'likes': [],
+          'likes_me': [],
           'terms_agreed': true, // Add terms_agreed field set to true
 
-        });
-        saveProfile();
-
-        await FirebaseChatCore.instance.createUserInFirestore(
-          types.User(
-            firstName: 'John',
-            id: FirebaseAuth.instance.currentUser!.uid, // UID from Firebase Authentication
-            imageUrl: 'https://i.pravatar.cc/300',
-            lastName: 'Doe',
-          ),
-        );
+        },SetOptions(merge: true));
 
         if (context.mounted) {
           Navigator.pop(context); // Dismiss loading indicator

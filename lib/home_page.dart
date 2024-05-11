@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'settings.dart';  // Make sure this is correctly imported
 import 'chat_page.dart';  // Make sure this is correctly imported
 import 'login.dart';  // Make sure this is correctly imported
+import 'likes_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +17,8 @@ class _HomePageState extends State<HomePage> {
 
   // List of widgets to call from the bottom navigation bar
   final List<Widget> _widgetOptions = [
-    Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, fontFamily: 'Ranga')), // Home Widget Placeholder
+    Text('Home Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, fontFamily: 'Ranga')),
+    LikedMePage(),
     ChatPage(),
     ThemePage(),
   ];
@@ -31,7 +33,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('BeReal Dating', style: TextStyle(fontFamily: 'Ranga', fontSize: 23)),
+        surfaceTintColor: Colors.red,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),  // Display the selected page
@@ -43,6 +47,10 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.star), //fix to normal heart
+            label: 'Likes Me'
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.chat),
             label: 'Chat',
           ),
@@ -51,6 +59,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Settings',
           ),
         ],
+        unselectedItemColor: Colors.amber[800],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,

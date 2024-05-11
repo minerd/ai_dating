@@ -17,24 +17,24 @@ class _ChatPageState extends State<ChatPage> {
     _loadUsers();
   }
 
-  Future<void> _loadUsers() async {
-    try {
-      final users = await FirebaseChatCore.instance.users().first; // Assuming it's a stream and taking the first snapshot of data.
+  void _loadUsers() {
+    final userStream = FirebaseChatCore.instance.users(); // This should be a stream
+    userStream.listen((users) {
       setState(() {
         _users.clear();
         _users.addAll(users);
       });
-    } catch (e) {
-      print("Error loading users: $e");
-    }
+    }).onError((error) {
+      print("Error loading users: $error");
+    });
   }
+
 
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Chat Page')),
       body: ListView.builder(
         itemCount: _users.length,
         itemBuilder: (context, index) {

@@ -63,14 +63,14 @@ class _RegisterPage2State extends State<RegisterPage2> {
     try {
       final Position position = await _determinePosition();
       await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
-        'name': _nameController.text,
+        'firstName': _nameController.text,
         'age': int.parse(_ageController.text),
         'location': GeoPoint(position.latitude, position.longitude),
-      });
+      },);
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pop(); // Optionally navigate away after saving
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())); // Optionally navigate away after saving
     } catch (e) {
       setState(() {
         _isLoading = false;
