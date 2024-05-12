@@ -14,6 +14,7 @@ class _LikedMePageState extends State<LikedMePage> {
   void initState() {
     super.initState();
     _loadLikedUsers();
+    print(FirebaseAuth.instance.currentUser!.uid);
   }
 
   Future<void> _loadLikedUsers() async {
