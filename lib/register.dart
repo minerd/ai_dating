@@ -212,15 +212,17 @@ class _RegisterPageState extends State<RegisterPage> {
         await FirebaseChatCore.instance.createUserInFirestore(
           types.User(
             firstName: 'John',
-            id: FirebaseAuth.instance.currentUser!.uid, // UID from Firebase Authentication
+            id: FirebaseAuth.instance.currentUser!.uid.toString(), // UID from Firebase Authentication
             imageUrl: '',
             lastName: 'Doe',
+            createdAt: DateTime.now().millisecondsSinceEpoch.toInt(), // Current time in milliseconds
           ),
         );
         saveProfile();
         FirebaseFirestore.instance.collection('users')
             .doc(userCredential.user!.uid)
             .set({
+          'id': userCredential.user!.uid.toString(),
           'images': [],
           'age': '',
           'height': '',

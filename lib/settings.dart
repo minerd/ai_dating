@@ -51,9 +51,9 @@ class _ThemePageState extends State<ThemePage> {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       if (userDoc.exists) {
         Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-        _ageController.text = userData['age'] ?? '';
-        _heightController.text = userData['height'] ?? '';
-        _nameController.text = userData['name'] ?? '';
+        _ageController.text = userData['age'].toString() ?? '';
+        _heightController.text = userData['height'].toString() ?? '';
+        _nameController.text = userData['name'].toString() ?? '';
         _videoGamesController.text = userData['video_games'] ?? '';
         _zodiacController.text = userData['zodiac'] ?? '';
         _lookingForController.text = userData['looking_for'] ?? '';
