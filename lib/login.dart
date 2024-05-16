@@ -1,29 +1,29 @@
 import 'package:ai_dating/home_page.dart';
 import 'package:ai_dating/register.dart';
 import 'package:ai_dating/button.dart';
-import 'package:ai_dating/swipe_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dating/text_field.dart';
-import 'package:ai_dating/phone_page.dart';
-import '../main.dart';
+import 'package:ai_dating/phone_page.dart'; // Corrected import statement
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ai_dating/constants.dart';
 import 'chat_page.dart';
+import 'notification_service.dart';  // Corrected import statement
 
 bool isClassRegistered = true;
 final _firestore = FirebaseFirestore.instance;
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, this.onTap});
+  final NotificationService notificationService;  // Added this line
+
+  const LoginPage({Key? key, this.onTap, required this.notificationService}) : super(key: key);  // Added this line
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
@@ -33,30 +33,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void register() {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(notificationService: widget.notificationService,)));
   }
+
   void noSignIn() {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-  }
-  
-  void PhonePage(){
-     Navigator.push(context, MaterialPageRoute(builder: (context)=>phonePage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(notificationService: widget.notificationService)));
   }
 
-  /*void TestSwipeable(){
-     Navigator.push(context, MaterialPageRoute(builder: (context)=>Swipes()));
-  }*/
+  void navigateToPhonePage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PhonePage(notificationService: widget.notificationService)));
+  }
 
-  //user sign in
+  // User sign in
   void signIn() async {
-    //show progress
+    // Show progress
     showDialog(
-        context: context,
-        builder:(context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
-
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -64,24 +60,26 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordTextController.text,
       );
       Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage(),),);
-
-    } on FirebaseAuthException catch(e){
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(notificationService: widget.notificationService),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       displayMessage(e.code);
     }
   }
-  //display dialog message
-  void displayMessage(String message){
+
+  // Display dialog message
+  void displayMessage(String message) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
+      context: context,
+      builder: (context) => AlertDialog(
         title: Text(message),
       ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,21 +97,21 @@ class _LoginPageState extends State<LoginPage> {
                   width: 200,
                   height: 200,
                 ),
-                const Text("Welcome!", style: TextStyle(fontSize: 17),),
-                const SizedBox(height: 25,),
+                const Text("Welcome!", style: TextStyle(fontSize: 17)),
+                const SizedBox(height: 25),
                 MyTextField(controller: emailTextController, hintText: 'Email', obscureText: false),
-                const SizedBox(height: 10,),
+                const SizedBox(height: 10),
                 MyTextField(controller: passwordTextController, hintText: 'Password', obscureText: true),
-                const SizedBox(height: 25,),
+                const SizedBox(height: 25),
                 MyButton(onTap: signIn, text: 'Sign in'),
-                const SizedBox(height: 25,),
+                const SizedBox(height: 25),
                 Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Not a member?", style: TextStyle( fontSize: 14)),
-                        const SizedBox(width: 4,),
+                        const Text("Not a member?", style: TextStyle(fontSize: 14)),
+                        const SizedBox(width: 4),
                         GestureDetector(
                           onTap: register,
                           child: const Text(
@@ -123,8 +121,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4,),
-                        Text(' | '),
+                        const SizedBox(width: 4),
+                        const Text(' | '),
                         GestureDetector(
                           onTap: noSignIn,
                           child: const Text(
@@ -134,22 +132,22 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4,),
-                        Text(' | '),
+                        const SizedBox(width: 4),
+                        const Text(' | '),
                         GestureDetector(
-                          onTap: (){},//TestSwipeable,
+                          onTap: () {},  // TestSwipeable,
                           child: const Text(
                             "Test Swipeable",
                             style: TextStyle(
-                              color: Colors.red, // Choose your desired color for the button text
+                              color: Colors.red,  // Choose your desired color for the button text
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(width: 4,),
+                    const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: PhonePage,
+                      onTap: navigateToPhonePage,
                       child: const Text(
                         "Sign In with Phone",
                         style: TextStyle(

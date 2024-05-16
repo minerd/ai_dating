@@ -18,9 +18,13 @@ import 'tos.dart';
 import 'register_screen_1.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'notification_service.dart';
 
 
 class RegisterPage extends StatefulWidget {
+  final NotificationService notificationService; // Add this line
+
+  const RegisterPage({Key? key, required this.notificationService}) : super(key: key); // Add this line
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -254,7 +258,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
         if (context.mounted) {
           Navigator.pop(context); // Dismiss loading indicator
-          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen1(),),);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen1(notificationService: widget.notificationService,),),);
         }
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context); // Dismiss loading indicator
@@ -276,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void goToSignInPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage(notificationService: widget.notificationService,)));
   }
 
   @override

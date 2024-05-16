@@ -3,9 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'home_page.dart';
+import 'notification_service.dart';
 
 class RegisterPage2 extends StatefulWidget {
-  const RegisterPage2({super.key});
+
+  final NotificationService notificationService; // Add this line
+
+  const RegisterPage2({Key? key, required this.notificationService}) : super(key: key); // Add this line
+
 
   @override
   State<RegisterPage2> createState() => _RegisterPage2State();
@@ -70,7 +75,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
       setState(() {
         _isLoading = false;
       });
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())); // Optionally navigate away after saving
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(notificationService: widget.notificationService,))); // Optionally navigate away after saving
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -113,7 +118,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
           TextButton(
             child: const Text('Okay'),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(notificationService: widget.notificationService,)));
             },
           )
         ],

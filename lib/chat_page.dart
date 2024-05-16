@@ -1,5 +1,6 @@
 import 'package:ai_dating/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -18,6 +19,7 @@ class _ChatPageState extends State<ChatPage> {
   types.User otherUserObject = types.User(id: 'id');
   final _users = <types.User>[];
   final _matchUsers = <types.User>[];
+  final _conversationUsers = <types.User>[];
   List<Map<String, dynamic>> _matches = [];
 
   Future<void> _loadMatches() async {
@@ -110,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
         print('hello');
         for (var doc in userDocs.docs) {
           var userData = doc.data();
-          print("Before conversion: $userData");
+          //print("Before conversion: $userData");
 
           // Dynamically convert all Timestamps to milliseconds since epoch
           userData.keys.forEach((key) {
@@ -119,9 +121,10 @@ class _ChatPageState extends State<ChatPage> {
             }
           });
 
-          print("After conversion: $userData david");
+          //print("After conversion: $userData david");
 
-          _users.add(types.User.fromJson(userData as Map<String, dynamic>));
+          _conversationUsers.add(types.User.fromJson(userData as Map<String, dynamic>));
+          print(_users);
         }
       });
     }
@@ -162,6 +165,7 @@ class _ChatPageState extends State<ChatPage> {
       }
       print(_matchUsers);
   }
+
 
   void _createRoomFromMatch(String userId) async {
     final Users = await FirebaseChatCore.instance.users().toList();
@@ -282,6 +286,18 @@ class _ChatPageState extends State<ChatPage> {
                 );
               },
             ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: _conversationUsers.length,
+                itemBuilder: (context, index) {
+                  final userId = _conversationUsers[index].firstName;
+                  return ListTile(
+                      title: Text(userId!),
+                      onTap: () async{
+                        // Handle tap event if needed
+                        _createRoom(await fetchUserObject(_conversationUsers[index].id));
+                      });}),
           ),
         ],
       ),

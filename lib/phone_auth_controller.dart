@@ -2,13 +2,12 @@ import 'package:ai_dating/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dating/verify_otp_page.dart';
-import 'package:flutter/widgets.dart';
+import 'package:ai_dating/notification_service.dart';
 
 class PhoneAuthController {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  
-  static Future<void> sendOtp(BuildContext context, String phoneNumber) async {
+  static Future<void> sendOtp(BuildContext context, String phoneNumber, NotificationService notificationService) async {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -19,8 +18,7 @@ class PhoneAuthController {
             ..showSnackBar(
               SnackBar(
                 content: Text(
-                  error.message ??
-                      "Something Went Wrong when verifying Phone Number",
+                  error.message ?? "Something Went Wrong when verifying Phone Number",
                 ),
               ),
             );
@@ -30,6 +28,7 @@ class PhoneAuthController {
             builder: (context) => VerifyOtpPage(
               phoneNumber: phoneNumber,
               verificationId: verificationId,
+              notificationService: notificationService,
             ),
           ));
         },
@@ -41,8 +40,7 @@ class PhoneAuthController {
         ..showSnackBar(
           SnackBar(
             content: Text(
-              error.message ??
-                  "Something Went Wrong when verifying Phone Number",
+              error.message ?? "Something Went Wrong when verifying Phone Number",
             ),
           ),
         );
@@ -52,13 +50,13 @@ class PhoneAuthController {
   }
 
   static Future<void> verifyOtp(
-      BuildContext context, String verificationId, String smsCode) async {
+      BuildContext context, String verificationId, String smsCode, NotificationService notificationService) async {
     try {
       final credential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: smsCode);
       await _auth.signInWithCredential(credential);
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => HomePage(notificationService: notificationService)),
       );
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context)
@@ -66,8 +64,7 @@ class PhoneAuthController {
         ..showSnackBar(
           SnackBar(
             content: Text(
-              error.message ??
-                  "Something Went Wrong when verifying Phone Number",
+              error.message ?? "Something Went Wrong when verifying Phone Number",
             ),
           ),
         );

@@ -3,9 +3,12 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'add_data.dart'; // Make sure this import is correct
 import 'register_screen_2.dart';
+import 'notification_service.dart';
 
 class RegisterScreen1 extends StatefulWidget {
-  const RegisterScreen1({super.key});
+  final NotificationService notificationService; // Add this line
+
+  const RegisterScreen1({Key? key, required this.notificationService}) : super(key: key); // Add this line
 
   @override
   State<RegisterScreen1> createState() => _RegisterScreen1State();
@@ -61,16 +64,17 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
     }
   }
 
-
   Future<void> uploadImage() async {
     setState(() {
       _isUploading = true;
     });
     StoreData storeData = StoreData();
-    String response = await storeData.saveData(file:_image!);
+    String response = await storeData.saveData(file: _image!);
     if (response == 'success') {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const RegisterPage2()),
+        MaterialPageRoute(
+          builder: (context) => RegisterPage2(notificationService: widget.notificationService),
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -82,5 +86,3 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
     });
   }
 }
-
-

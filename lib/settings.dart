@@ -3,11 +3,14 @@ import 'constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
+import 'notification_service.dart';
 
 
 
 class ThemePage extends StatefulWidget {
-  const ThemePage({super.key});
+  final NotificationService notificationService; // Add this line
+
+  const ThemePage({Key? key, required this.notificationService}) : super(key: key);
 
   @override
   State<ThemePage> createState() => _ThemePageState();
@@ -126,19 +129,22 @@ class _ThemePageState extends State<ThemePage> {
     );
   }
 
-  Widget _buildExpansionTile(String title, List<String> options,TextEditingController controller) {
+  Widget _buildExpansionTile(String title, List<String> options, TextEditingController controller) {
     return ExpansionTile(
-      title: Text(title),
+      title: Text(controller.text.isEmpty ? title : controller.text),
       children: options.map((String option) {
         return ListTile(
           title: Text(option),
-          onTap: (){setState(() {
-            controller.text = option; // Set the selected option to the controller
-          });},
+          onTap: () {
+            setState(() {
+              controller.text = option; // Set the selected option to the controller
+            });
+          },
         );
       }).toList(),
     );
   }
+
 
   Widget _buildThemeListTile(String title, MaterialColor color, themeColor choice) {
     return ListTile(
@@ -193,6 +199,18 @@ class _ThemePageState extends State<ThemePage> {
           'height': _heightController.text.trim(),
           'name': _nameController.text.trim(),
           'video_games': _videoGamesController.text.trim(),
+          'zodiac':_zodiacController.text.trim(),
+          'age_bounds': [],
+          'looking_for': _lookingForController.text.trim(),
+          'personality_type': _personalityTypeController.text.trim(),
+          'love_style': _loveStyleController.text.trim(),
+          'pets': _petController.text.trim(),
+          'drinking': _drinkingController.text.trim(),
+          'smoking': _smokingController.text.trim(),
+          'video_games': _videoGamesController.text.trim(),
+          'cannabis': _cannabisController.text.trim(),
+          'workout': _workoutController.text.trim(),
+          'sleeping_habits': _sleepingController.text.trim(),
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile Updated')));
       } catch (e) {
@@ -229,7 +247,7 @@ class _ThemePageState extends State<ThemePage> {
   Future<void> _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage(notificationService: widget.notificationService,)));
     } catch (e) {
       _showErrorDialog('Failed to sign out: $e');
     }
@@ -243,7 +261,7 @@ class _ThemePageState extends State<ThemePage> {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
         await user.delete();
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => LoginPage(notificationService: widget.notificationService,)),
               (Route<dynamic> route) => false,
         );
       } catch (e) {

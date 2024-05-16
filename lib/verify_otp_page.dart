@@ -2,20 +2,20 @@ import 'package:ai_dating/phone_auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pinput/pinput.dart';
+import 'notification_service.dart';
 
 class VerifyOtpPage extends StatefulWidget {
-  const VerifyOtpPage({super.key, required this.phoneNumber,required this.verificationId});
+  const VerifyOtpPage({Key? key, required this.phoneNumber, required this.verificationId, required this.notificationService}) : super(key: key);
 
   final String verificationId;
   final String phoneNumber;
-  
+  final NotificationService notificationService;
+
   @override
   State<VerifyOtpPage> createState() => _VerifyOtpPageState();
 }
 
 class _VerifyOtpPageState extends State<VerifyOtpPage> {
-
-  
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -39,10 +39,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
       ),
     );
 
-
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.phoneNumber),
+      appBar: AppBar(
+        title: Text(widget.phoneNumber),
       ),
       body: SafeArea(
         child: Padding(
@@ -50,25 +49,27 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
           child: Column(
             children: [
               Text(
-                " To complete you number, please enter the 6 diget code sent to your phone below"
+                  "To complete your number verification, please enter the 6-digit code sent to your phone below."
               ),
-              SizedBox(height:20),
+              SizedBox(height: 20),
               Pinput(
                 length: 6,
                 defaultPinTheme: defaultPinTheme,
                 focusedPinTheme: focusedPinTheme,
                 submittedPinTheme: submittedPinTheme,
-                onCompleted: (value){
+                onCompleted: (value) {
                   PhoneAuthController.verifyOtp(
-                    context, 
-                    widget.verificationId, 
-                    value
-                    );
+                    context,
+                    widget.verificationId,
+                    value,
+                    widget.notificationService, // Pass the notificationService here
+                  );
                 },
               )
-            ],)
-        )        
-        )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

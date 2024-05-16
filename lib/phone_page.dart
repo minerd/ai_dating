@@ -1,38 +1,42 @@
 import 'package:ai_dating/phone_auth_controller.dart';
-import 'package:ai_dating/verify_otp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'notification_service.dart';
 
-class phonePage extends StatefulWidget {
-  const phonePage({Key? key});
+class PhonePage extends StatefulWidget {
+  final NotificationService notificationService;
+
+  const PhonePage({Key? key, required this.notificationService}) : super(key: key);
 
   @override
-  State<phonePage> createState() => _phonePageState();
+  State<PhonePage> createState() => _PhonePageState();
 }
 
-class _phonePageState extends State<phonePage> {
+class _PhonePageState extends State<PhonePage> {
   bool enableOtpBtn = true; // Always true
 
   String phoneNumber = '';
-  getOtp(){
-    PhoneAuthController.sendOtp(context, phoneNumber);
+
+  void getOtp() {
+    PhoneAuthController.sendOtp(context, phoneNumber, widget.notificationService);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Enter Your Phone Number"),
+        title: const Text("Enter Your Phone Number"),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              Text("BeReal Dating Needs to verify your phone number. Carrier Charges May Apply."),
-              SizedBox(height: 30),
+              const Text("BeReal Dating Needs to verify your phone number. Carrier Charges May Apply."),
+              const SizedBox(height: 30),
 
               InternationalPhoneNumberInput(
-                onInputValidated: (value){
+                onInputValidated: (value) {
                   setState(() {
                     // No need to update enableOtpBtn since it's always true
                   });
@@ -45,7 +49,7 @@ class _phonePageState extends State<phonePage> {
                 formatInput: true,
                 autoFocus: true,
                 keyboardType: TextInputType.phone,
-                selectorConfig:const SelectorConfig(
+                selectorConfig: const SelectorConfig(
                   useEmoji: true,
                   selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                 ),
@@ -59,7 +63,7 @@ class _phonePageState extends State<phonePage> {
 
               SizedBox(
                 width: double.infinity,
-                child: FilledButton(
+                child: ElevatedButton(  // Changed to ElevatedButton to match Flutter's updated button styling
                   onPressed: enableOtpBtn ? getOtp : null, // Always enabled since enableOtpBtn is always true
                   child: const Text('Get OTP'),
                 ),
